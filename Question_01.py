@@ -9,12 +9,12 @@
 class File():
     def __init__(self, initial_file_name, initial_content=" "):
         self.file_number = None
-        self.fileName = initial_file_name
-        self.fileOwner = " "
-        self.timeModified = None
+        self.file_name = initial_file_name
+        self.file_owner = " "
+        self.time_modified = None
         self.content = initial_content
         self.__update_file_counter()
-        self.set_date()
+        self.__set_date()
         
         self.file_ref = None
     
@@ -31,23 +31,23 @@ class File():
         
     def get_name(self):
         """Returns the file name."""
-        return self.fileName
+        return self.file_name
     
     
     def set_owner(self, owner_name):
         """Adds the name of the file owner."""
-        self.fileOwner = owner_name
+        self.file_owner = owner_name
         
         
     def get_owner(self):
         """Returns the name of the file owner (if one was set). Otherwise, returns an alert that none was set."""
-        if self.fileOwner == " ":
+        if self.file_owner == " ":
             return "[No Owner Has Been Set]"                                    # Handle file having no owner
         else:
-            return self.fileOwner                                               # If has owner, return the name
+            return self.file_owner                                               # If has owner, return the name
         
         
-    def set_date(self):
+    def __set_date(self):
         """Adds the last date and time file was modified."""
         pass
         
@@ -84,7 +84,7 @@ class File():
     
     
     def __update_local_content(self):
-        self.file = open(self.fileName, 'r')                                    # Open the file in read mode
+        self.file = open(self.file_name, 'r')                                    # Open the file in read mode
         self.content = self.file.read()                                         # Store file contents as single string
         self.file.close()                                                       # Close the file
         #return [boolean if file read was successful]
@@ -93,7 +93,7 @@ class File():
     # TODO: Make sure other file content is str (? .write() cannot do numbers, p. 119)
     def add_from(self, other_file):
         """Adds the content of the other file to the end of the current file."""
-        self.file_ref = open(self.fileName, 'a')                                # Open the file in append mode
+        self.file_ref = open(self.file_name, 'a')                                # Open the file in append mode
         other_file_ref = open(other_file, 'r')                                  # Open the other file in read mode
         other_file_content = other_file_ref.read()                              # Record other file contents as string
         
@@ -104,7 +104,7 @@ class File():
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
         """Counts the number of words in a file and returns it."""
-        self.file_ref = open(self.fileName, 'a')                                # Open the file in append mode
+        self.file_ref = open(self.file_name, 'a')                                # Open the file in append mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         words = raw_content.split()                                             # Separate into individual words
         
@@ -113,7 +113,7 @@ class File():
     
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        self.file_ref = open(self.fileName, 'rw')                               # Open the file in read/write mode
+        self.file_ref = open(self.file_name, 'rw')                               # Open the file in read/write mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         
         updated_content = raw_content.replace(target, replacement)              # Replace occurences of target substring
@@ -122,7 +122,7 @@ class File():
     
     
     def open_file(self):
-        self.file_ref = open(self.fileName, 'r')                                # Open the file in read mode
+        self.file_ref = open(self.file_name, 'r')                                # Open the file in read mode
     
     
     # TODO: Refactor name to better illustrate purpose
