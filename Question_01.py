@@ -131,11 +131,12 @@ class File:
         self.file.close()                                                       # Close the file
     
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
-    def add_from(self, other_file_content):
+    def add_from(self, other_file):
         """Adds the content of the other file to the end of the current file."""
         self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
+        other_file_content = other_file.get_content()                           # Load the contents of the other file
         
-        self.file_ref.write(other_file_content)                                 # Append the data from other file
+        self.file_ref.write(other_file_content)                                 # Append the data from the other file
         
         self.file_ref.close()                                                   # Close the file
         self.__update_date_modified()                                           # Update the time last modified
@@ -149,7 +150,7 @@ class File:
 
         self.file_ref.close()                                                   # Close the file
         
-        return len(words)                                                       # len will num of indiv. words
+        return len(words)                                                       # List length == num of indiv. words
     
     
     def replace(self, target, replacement):
@@ -157,7 +158,7 @@ class File:
         self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         
-        updated_content = raw_content.replace(target, replacement)              # Replace occurences of target substring
+        updated_content = raw_content.replace(target, replacement)              # Replace occurrences of target substr.
         
         self.file_ref.write(updated_content)                                    # Write updated content to file
 
