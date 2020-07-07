@@ -44,43 +44,52 @@ class File():
         
     def set_date(self):
         """Adds the last date and time file was modified."""
+        pass
         
         
     def get_date(self):
         """Returns the last date and time file was modified."""
+        pass
         
         
     def add_line(self, text_to_add):
         """Adds a new line to the end of file."""
+        pass
         
         
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
+        pass
         
         
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
+        pass
         
         
     def set_content(self, string):
         """Changes the content of the text file, overwriting any existing text."""
+        pass
         
         
     def has_word(self):
         """Checks if the file has a specific word in it. Returns true if the word is found, otherwise returns false."""
+        pass
     
     
     def add_from(self):
         """Adds the content of the other file to the end of the current file."""
+        pass
     
     
     def count_words(self):
         """Counts the number of words in a file and returns it."""
+        pass
     
     
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        
+        pass
     
     # TODO: Refactor name to better illustrate purpose
     @staticmethod
