@@ -116,18 +116,24 @@ class File:
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
         
-        # Textbook states "rw" is a mode (p.122). Typo?
+        # Textbook states 'rw' is a mode (p.122). Typo?
         self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
         
         content = self.file_ref.read()                                          # Store file contents as single string
         content_by_lines = content.split('\n')                                  # Delimit by new line
-        content_by_lines[line_number] = ""                                      # Erase content at provided line number
+        num_of_lines = len(content_by_lines)                                    # Record how many lines there are
+        
+        if (line_number - 1) > num_of_lines:
+            print("There are only {} lines".format(num_of_lines))               # Line to erase doesn't exist
+            return None
+        
+        removed_line = content_by_lines.pop(line_number - 1)                    # Remove content at intended line number
+        print("Content that was removed: {}".format(removed_line))              # Confirmation of what was removed
         
         rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
-        
         self.file_ref.write(rebuilt_content)                                    # Write the updated content to file
         
-        self.file.close()                                                       # Close the file
+        self.file_ref.close()                                                   # Close the file
         self.__update_date_modified()                                           # Update the time last modified
         
     # TODO: Clarify if printing or just return raw content
