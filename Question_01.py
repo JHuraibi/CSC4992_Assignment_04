@@ -13,19 +13,20 @@ class File():
         self.file_owner = " "
         self.time_modified = None
         self.content = initial_content
+        self.date_modified = " "
         self.__update_file_counter()
         self.__set_date()
         
-        self.file_ref = None
+        self.file_ref = None    # TODO: Update according to future method of handling file opening
     
     
     @staticmethod
     def __update_file_counter():
-        """Updates the file-number counter"""
+        """Updates the file-number counter."""
     
     
     def get_number(self):
-        """Returns the file number"""
+        """Returns the file number."""
         return self.file_number
         
         
@@ -35,7 +36,7 @@ class File():
     
     
     def set_owner(self, owner_name):
-        """Adds the name of the file owner."""
+        """Updates the name of the file owner."""
         self.file_owner = owner_name
         
         
@@ -44,32 +45,47 @@ class File():
         if self.file_owner == " ":
             return "[No Owner Has Been Set]"                                    # Handle file having no owner
         else:
-            return self.file_owner                                               # If has owner, return the name
+            return self.file_owner                                              # If has owner, return the name
         
         
     def __set_date(self):
-        """Adds the last date and time file was modified."""
+        """Updates the last date and time file was modified."""
         pass
         
         
     def get_date(self):
         """Returns the last date and time file was modified."""
-        pass
+        return self.date_modified
         
         
     def add_line(self, text_to_add):
         """Adds a new line to the end of file."""
-        pass
+        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
+        
+        self.file_ref.write(text_to_add)                                        # Append the new data
+        self.file_ref.close()                                                   # Close the file
         
         
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
-        pass
+        self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
         
+        content = self.file.read()                                              # Store file contents as single string
+        content_by_lines = content.split('\n')                                  # Delimit by new line
+        content_by_lines[line_number] = ""                                      # Erase content at provided line number
         
+        self.file_ref.write(content_by_lines)                                   # Write the updated content
+        
+        self.file.close()                                                       # Close the file
+        
+    
+    # TODO: Clarify if printing or just return raw content
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
-        pass
+        self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
+        content = self.file_ref.read()                                          # Read-in data as single string
+        
+        print("File Content: \n{}".format(self.file_ref))                       # Print header followed by file content
         
         
     def set_content(self, string):
@@ -84,16 +100,16 @@ class File():
     
     
     def __update_local_content(self):
-        self.file = open(self.file_name, 'r')                                    # Open the file in read mode
+        self.file = open(self.file_name, 'r')                                   # Open the file in read mode
         self.content = self.file.read()                                         # Store file contents as single string
         self.file.close()                                                       # Close the file
         #return [boolean if file read was successful]
     
     
-    # TODO: Make sure other file content is str (? .write() cannot do numbers, p. 119)
+    # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file):
         """Adds the content of the other file to the end of the current file."""
-        self.file_ref = open(self.file_name, 'a')                                # Open the file in append mode
+        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
         other_file_ref = open(other_file, 'r')                                  # Open the other file in read mode
         other_file_content = other_file_ref.read()                              # Record other file contents as string
         
@@ -104,7 +120,7 @@ class File():
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
         """Counts the number of words in a file and returns it."""
-        self.file_ref = open(self.file_name, 'a')                                # Open the file in append mode
+        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         words = raw_content.split()                                             # Separate into individual words
         
@@ -122,7 +138,7 @@ class File():
     
     
     def open_file(self):
-        self.file_ref = open(self.file_name, 'r')                                # Open the file in read mode
+        self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
     
     
     # TODO: Refactor name to better illustrate purpose
