@@ -36,16 +36,18 @@ class File:
         """Checks if a file already exists with the intended file-name.
         If no: returns the available file name.
         If yes: Concatenate a modifier to the file name, re-check with the modified name.
+        Value of variable "name" is never altered.
         """
         import os
         modifier = 1
+        possible_name = str(name) + str(modifier) + ".txt"
     
-        while os.path.exists(name + ".txt"):
-            print("File with name [{}] exists.".format(name))
-            name = "{}-{}".format(name, modifier)
-            modifier = modifier + 1
+        while os.path.exists(possible_name):
+            print("File with name [{}] exists.".format(possible_name))
+            modifier = float(modifier) + 1
+            possible_name = str(name) + str(modifier) + ".txt"
         
-        self.file_name = name + ".txt"
+        self.file_name = possible_name
     
     
     def __create_file(self):
@@ -191,7 +193,7 @@ class File:
     
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
+        self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         
         updated_content = raw_content.replace(target, replacement)              # Replace occurrences of target substr.
