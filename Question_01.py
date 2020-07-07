@@ -20,12 +20,20 @@ class File:
         self.content = initial_content
         self.date_last_modified = " "
         
-        self.__generate_file_name(initial_file_name)                            # Set/generate and set file name
-        self.__update_file_counter()
-        self.__update_date_modified()                                           # Update the time last modified
+        self.__initial_setup(initial_file_name)
         
         self.file_ref = None    # TODO: Update to match future method of handling file opening
 
+    
+    # TODO: Better way of adding the ".txt"
+    def __initial_setup(self, initial_file_name):
+        initial_file_name = initial_file_name + ".txt"
+        
+        self.__generate_file_name(initial_file_name)                            # Set/generate and set file name
+        self.__create_file()
+        self.__update_file_counter()
+        self.__update_date_modified()                                           # Update the time last modified
+        
     # TODO: Refactor name to better illustrate purpose
     def __generate_file_name(self, name):
         """Checks if a file already exists with the intended file-name.
@@ -33,17 +41,21 @@ class File:
         If yes: Concatenate a modifier to the file name, re-check with the modified name.
         """
         import os
-        file_exists = os.path.exists(name)
         modifier = 1
     
-        while file_exists:
+        while os.path.exists(name):
             print("File with name [{}] exists.".format(name))
             name = "{}-{}.txt".format(name, modifier)
-            file_exists = os.path.exists(name)
             modifier = modifier + 1
-
-        print("File created with name [{}].".format(name))
+        
         self.file_name = name
+    
+    
+    def __create_file(self):
+        """Creates a file with the name set by __generate_file_name"""
+        file = open(self.file_name, "x")
+        print("File created with name [{}].".format(self.file_name))
+        
     
     @staticmethod
     def __update_file_counter():
@@ -106,7 +118,7 @@ class File:
     
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
-        self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
+        self.file_ref = open(self.file_name, "rw")                              # Open the file in read/write mode
         
         content = self.file.read()                                              # Store file contents as single string
         content_by_lines = content.split('\n')                                  # Delimit by new line
@@ -125,9 +137,9 @@ class File:
         self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
         all_content = self.file_ref.read()                                      # Read-in data as single string
         
-        print("File Content: \n{}".format(all_content))                         # Print header followed by file content
-        
         self.file_ref.close()                                                   # Close the file
+        
+        return all_content                                                      # Return the content
         
         
     def set_content(self, new_content):
@@ -223,15 +235,17 @@ if __name__ == '__main__':
     print(A)
     
     # replaces the word "this" with the word "that" everywhere in the file.
-    A.replace("this","that")
+    A.replace("this", "that")
     
-    print(A.getContent())
+    print(A.get_content())
 
     # returns true if the file contains the word this
-    B.hasWord("World")
+    B.has_word("World")
 
+    # TODO: Overriding methods
     # The content of A and B are added together and written into a new file E.
-    E = A + B
+    # E = A + B
+    # print("A + B = {}".format(E))
 
     # returns true, if the number of words in A is greater than the number of words in B
-    A > B
+    # print("A > B is {}".format(A > B))
