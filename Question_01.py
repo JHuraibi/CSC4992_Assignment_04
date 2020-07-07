@@ -65,7 +65,8 @@ class File():
         self.file_ref.write(text_to_add)                                        # Append the new data
         self.file_ref.close()                                                   # Close the file
         
-        
+    
+    # TODO: Check if List needs to be converted back to a single string
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
         self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
@@ -73,6 +74,9 @@ class File():
         content = self.file.read()                                              # Store file contents as single string
         content_by_lines = content.split('\n')                                  # Delimit by new line
         content_by_lines[line_number] = ""                                      # Erase content at provided line number
+        
+        #rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
+        #self.file_ref.write(content_by_lines)                                   # Write the updated content
         
         self.file_ref.write(content_by_lines)                                   # Write the updated content
         
@@ -87,10 +91,14 @@ class File():
         
         print("File Content: \n{}".format(self.file_ref))                       # Print header followed by file content
         
+        self.file_ref.close()                                                   # Close the file
         
-    def set_content(self, string):
+        
+    def set_content(self, new_content):
         """Changes the content of the text file, overwriting any existing text."""
-        pass
+        self.file_ref = open(self.file_name, 'w')                               # Open the file in read/write mode
+        self.file_ref.write(new_content)                                        # Write the new content
+        self.file_ref.close()                                                   # Close the file
         
         
     def has_word(self, word_to_find):
@@ -107,14 +115,16 @@ class File():
     
     
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
-    def add_from(self, other_file):
+    def add_from(self, other_file_name):
         """Adds the content of the other file to the end of the current file."""
         self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
-        other_file_ref = open(other_file, 'r')                                  # Open the other file in read mode
-        other_file_content = other_file_ref.read()                              # Record other file contents as string
+        other_file_ref = open(other_file_name, 'r')                             # Open the other file in read mode
         
+        other_file_content = other_file_ref.read()                              # Record other file contents as string
         self.file_ref.write(other_file_content)                                 # Append the data from other file
+        
         self.file_ref.close()                                                   # Close the file
+        other_file_ref.close()                                                  # Close the other file
     
     
     # TODO: Make sure unwanted items are not being counted
@@ -123,22 +133,28 @@ class File():
         self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         words = raw_content.split()                                             # Separate into individual words
+
+        self.file_ref.close()                                                   # Close the file
         
         return len(words)                                                       # len will num of indiv. words
     
     
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        self.file_ref = open(self.file_name, 'rw')                               # Open the file in read/write mode
+        self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         
         updated_content = raw_content.replace(target, replacement)              # Replace occurences of target substring
         
         self.file_ref.write(updated_content)                                    # Write updated content to file
+
+        self.file_ref.close()                                                   # Close the file
     
     
     def open_file(self):
         self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
+        # Don't close yet, the calling method will access the file
+        # !! Critical: Ensure calling method closes file
     
     
     # TODO: Refactor name to better illustrate purpose
