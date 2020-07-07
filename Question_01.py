@@ -19,7 +19,7 @@ class File():
         self.content = initial_content
         self.date_modified = " "
         self.__update_file_counter()
-        self.__update_date_modified()
+        self.__update_date_modified()                                           # Update the time last modified
         
         self.file_ref = None    # TODO: Update according to future method of handling file opening
     
@@ -43,6 +43,7 @@ class File():
     def set_owner(self, owner_name):
         """Updates the name of the file owner."""
         self.file_owner = owner_name
+        self.__update_date_modified()                                           # Update the time last modified
         
         
     def get_owner(self):
@@ -54,7 +55,7 @@ class File():
         
         
     def __update_date_modified(self):
-        """Updates the last date and time file was modified."""
+        """Updates the last date and time file was modified (i.e. time when method was called)."""
         self.date_modified = datetime.datetime.now()
         
         
@@ -80,6 +81,8 @@ class File():
         self.file_ref.write(text_to_add)                                        # Append the new data
         self.file_ref.close()                                                   # Close the file
         
+        self.__update_date_modified()                                           # Update the time last modified
+        
     
     # TODO: Check if List needs to be converted back to a single string
     def delete_line(self, line_number):
@@ -93,9 +96,11 @@ class File():
         #rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
         #self.file_ref.write(content_by_lines)                                   # Write the updated content
         
-        self.file_ref.write(content_by_lines)                                   # Write the updated content
+        self.file_ref.write(content_by_lines)                                   # Write the updated content to file
         
         self.file.close()                                                       # Close the file
+        
+        self.__update_date_modified()                                           # Update the time last modified
         
     
     # TODO: Clarify if printing or just return raw content
@@ -114,6 +119,8 @@ class File():
         self.file_ref = open(self.file_name, 'w')                               # Open the file in read/write mode
         self.file_ref.write(new_content)                                        # Write the new content
         self.file_ref.close()                                                   # Close the file
+        
+        self.__update_date_modified()                                           # Update the time last modified
         
         
     def has_word(self, word_to_find):
@@ -140,6 +147,8 @@ class File():
         
         self.file_ref.close()                                                   # Close the file
         other_file_ref.close()                                                  # Close the other file
+        
+        self.__update_date_modified()                                           # Update the time last modified
     
     
     # TODO: Make sure unwanted items are not being counted
@@ -164,6 +173,8 @@ class File():
         self.file_ref.write(updated_content)                                    # Write updated content to file
 
         self.file_ref.close()                                                   # Close the file
+        
+        self.__update_date_modified()                                           # Update the time last modified                                           # Update the time last modified
     
     
     def open_file(self):
