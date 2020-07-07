@@ -63,8 +63,7 @@ class File():
         """Returns the last date and time file was modified."""
         return self.date_last_modified
     
-    
-    # TODO: Instructions don't give a date format
+    # TODO: Instructions don't give a date format to use
     def print_date_style_1(self):
         """Prints date-modified as HH:MM:SS on MM/DD/YYYY"""
         date_ref = self.get_date()                                              # Establish a reference to the datetime
@@ -79,12 +78,11 @@ class File():
         self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
         
         self.file_ref.write(text_to_add)                                        # Append the new data
-        self.file_ref.close()                                                   # Close the file
         
+        self.file_ref.close()                                                   # Close the file
         self.__update_date_modified()                                           # Update the time last modified
         
     
-    # TODO: Check if List needs to be converted back to a single string
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
         self.file_ref = open(self.file_name, 'rw')                              # Open the file in read/write mode
@@ -93,23 +91,20 @@ class File():
         content_by_lines = content.split('\n')                                  # Delimit by new line
         content_by_lines[line_number] = ""                                      # Erase content at provided line number
         
-        #rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
-        #self.file_ref.write(content_by_lines)                                   # Write the updated content
+        rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
         
-        self.file_ref.write(content_by_lines)                                   # Write the updated content to file
+        self.file_ref.write(rebuilt_content)                                    # Write the updated content to file
         
         self.file.close()                                                       # Close the file
-        
         self.__update_date_modified()                                           # Update the time last modified
         
-    
     # TODO: Clarify if printing or just return raw content
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
         self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
-        content = self.file_ref.read()                                          # Read-in data as single string
+        all_content = self.file_ref.read()                                      # Read-in data as single string
         
-        print("File Content: \n{}".format(self.file_ref))                       # Print header followed by file content
+        print("File Content: \n{}".format(all_content))                         # Print header followed by file content
         
         self.file_ref.close()                                                   # Close the file
         
@@ -135,7 +130,6 @@ class File():
         self.file.close()                                                       # Close the file
         #return [boolean if file read was successful]
     
-    
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file_name):
         """Adds the content of the other file to the end of the current file."""
@@ -149,7 +143,6 @@ class File():
         other_file_ref.close()                                                  # Close the other file
         
         self.__update_date_modified()                                           # Update the time last modified
-    
     
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
@@ -182,7 +175,6 @@ class File():
         # Don't close yet, the calling method will access the file
         # !! Critical: Ensure calling method closes file
     
-    
     # TODO: Refactor name to better illustrate purpose
     @staticmethod
     def __generate_file_name(name):
@@ -203,13 +195,46 @@ class File():
 
 
 if __name__ == '__main__':
-    A = File("test")
-    B = File("test")
-    C = File("test")
+    # A = File("test")
+    # B = File("test")
+    # C = File("test")
+    #
+    # print("A File Number: {}".format(A.get_number()))
+    # print("B File Number: {}".format(B.get_number()))
+    # print("C File Number: {}".format(C.get_number()))
+    #
+    # print("C File Date: {}".format(C.get_date()))
+    # C.print_date_style_1()
+    
+    A = File("test1", "This is a file with some text")
+    B = File("test2")
+    C = File("test1", "This is another file with some text")
+    D = File("test2")
+    
+    C.set_owner("John Doe")
+    D.set_owner("Runtao Zhu")
+    
+    print(A.get_owner())
+    print(D.get_owner())
+    
+    D.set_content("This is a new content")
+    D.add_from(A)
+    D.get_date()
+    B.add_line("Hello World!")
+    B.add_line("This is a new line!")
+    B.delete_line(1)
+    print(A)
+    
+    # replaces the word "this" with the word "that" everywhere in the file.
+    A.replace("this","that")
+    
+    print(A.getContent())
 
-    print("A File Number: {}".format(A.get_number()))
-    print("B File Number: {}".format(B.get_number()))
-    print("C File Number: {}".format(C.get_number()))
+    # returns true if the file contains the word this
+    B.hasWord("World")
 
-    print("C File Date: {}".format(C.get_date()))
-    C.print_date_style_1()
+    # The content of A and B are added together and written into a new file E.
+    E = A + B
+
+    # returns true, if the number of words in A is greater than the number of words in B
+    A > B
