@@ -131,17 +131,13 @@ class File:
         self.file.close()                                                       # Close the file
     
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
-    def add_from(self, other_file_name):
+    def add_from(self, other_file_content):
         """Adds the content of the other file to the end of the current file."""
         self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
-        other_file_ref = open(other_file_name, 'r')                             # Open the other file in read mode
         
-        other_file_content = other_file_ref.read()                              # Record other file contents as string
         self.file_ref.write(other_file_content)                                 # Append the data from other file
         
         self.file_ref.close()                                                   # Close the file
-        other_file_ref.close()                                                  # Close the other file
-        
         self.__update_date_modified()                                           # Update the time last modified
     
     # TODO: Make sure unwanted items are not being counted
