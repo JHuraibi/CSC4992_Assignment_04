@@ -25,10 +25,7 @@ class File:
         self.file_ref = None    # TODO: Update to match future method of handling file opening
 
     
-    # TODO: Better way of adding the ".txt"
     def __initial_setup(self, initial_file_name):
-        initial_file_name = initial_file_name + ".txt"
-        
         self.__generate_file_name(initial_file_name)                            # Set/generate and set file name
         self.__create_file()
         self.__update_file_counter()
@@ -43,12 +40,12 @@ class File:
         import os
         modifier = 1
     
-        while os.path.exists(name):
+        while os.path.exists(name + ".txt"):
             print("File with name [{}] exists.".format(name))
-            name = "{}-{}.txt".format(name, modifier)
+            name = "{}-{}".format(name, modifier)
             modifier = modifier + 1
         
-        self.file_name = name
+        self.file_name = name + ".txt"
     
     
     def __create_file(self):
@@ -118,9 +115,11 @@ class File:
     
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
-        self.file_ref = open(self.file_name, "rw")                              # Open the file in read/write mode
         
-        content = self.file.read()                                              # Store file contents as single string
+        # Textbook states "rw" is a mode (p.122). Typo?
+        self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
+        
+        content = self.file_ref.read()                                          # Store file contents as single string
         content_by_lines = content.split('\n')                                  # Delimit by new line
         content_by_lines[line_number] = ""                                      # Erase content at provided line number
         
