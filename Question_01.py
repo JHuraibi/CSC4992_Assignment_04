@@ -7,10 +7,11 @@
 
 import datetime
 
+
 # TODO: Determine how to reference file data
 # e.g. Load/Read file each time or keep local copy in a str var?
-# Also: Change self.file_ref to a method-only scope?
-class File():
+# TODO: Change self.file_ref to a method-only scope?
+class File:
     def __init__(self, initial_file_name, initial_content=" "):
         self.file_number = None
         self.file_name = initial_file_name
@@ -123,12 +124,11 @@ class File():
         self.__update_local_content()
         return word_to_find in self.content
     
-    
+    # TODO: Add error handling
     def __update_local_content(self):
         self.file = open(self.file_name, 'r')                                   # Open the file in read mode
         self.content = self.file.read()                                         # Store file contents as single string
         self.file.close()                                                       # Close the file
-        #return [boolean if file read was successful]
     
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file_name):
@@ -166,8 +166,7 @@ class File():
         self.file_ref.write(updated_content)                                    # Write updated content to file
 
         self.file_ref.close()                                                   # Close the file
-        
-        self.__update_date_modified()                                           # Update the time last modified                                           # Update the time last modified
+        self.__update_date_modified()                                           # Update the time last modified
     
     
     def open_file(self):
