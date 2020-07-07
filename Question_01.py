@@ -17,7 +17,7 @@ class File():
         self.file_owner = " "
         self.time_modified = None
         self.content = initial_content
-        self.date_modified = " "
+        self.date_last_modified = " "
         self.__update_file_counter()
         self.__update_date_modified()                                           # Update the time last modified
         
@@ -56,12 +56,12 @@ class File():
         
     def __update_date_modified(self):
         """Updates the last date and time file was modified (i.e. time when method was called)."""
-        self.date_modified = datetime.datetime.now()
+        self.date_last_modified = datetime.datetime.now()
         
         
     def get_date(self):
         """Returns the last date and time file was modified."""
-        return self.date_modified
+        return self.date_last_modified
     
     
     # TODO: Instructions don't give a date format
