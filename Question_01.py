@@ -19,7 +19,7 @@ class File():
         self.content = initial_content
         self.date_modified = " "
         self.__update_file_counter()
-        self.__set_date()
+        self.__update_date_modified()
         
         self.file_ref = None    # TODO: Update according to future method of handling file opening
     
@@ -53,7 +53,7 @@ class File():
             return self.file_owner                                              # If has owner, return the name
         
         
-    def __set_date(self):
+    def __update_date_modified(self):
         """Updates the last date and time file was modified."""
         self.date_modified = datetime.datetime.now()
         
