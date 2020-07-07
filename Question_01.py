@@ -121,7 +121,6 @@ class File:
         
     def has_word(self, word_to_find):
         """Checks if the file has a specific word in it. Returns true if the word is found, otherwise returns false."""
-        self.__update_local_content()
         return word_to_find in self.content
     
     # TODO: Add error handling
