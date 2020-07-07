@@ -1,7 +1,11 @@
 # Author: Jamal Huraibi, fh1328
 # Assignment 4
 # Question 1
+# Note: Referenced datetime information from docs.python.org
+#                now():     https://docs.python.org/3/library/datetime.html#datetime.datetime.now
+#           strftime():     https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior
 
+import datetime
 
 # TODO: Determine how to reference file data
 # e.g. Load/Read file each time or keep local copy in a str var?
@@ -23,6 +27,7 @@ class File():
     @staticmethod
     def __update_file_counter():
         """Updates the file-number counter."""
+        pass
     
     
     def get_number(self):
@@ -50,12 +55,22 @@ class File():
         
     def __set_date(self):
         """Updates the last date and time file was modified."""
-        pass
+        self.date_modified = datetime.datetime.now()
         
         
     def get_date(self):
         """Returns the last date and time file was modified."""
         return self.date_modified
+    
+    
+    # TODO: Instructions don't give a date format
+    def print_date_style_1(self):
+        """Prints date-modified as HH:MM:SS on MM/DD/YYYY"""
+        date_ref = self.get_date()                                              # Establish a reference to the datetime
+        time = date_ref.strftime("%X")                                          # HH:MM:SS
+        date = date_ref.strftime("%x")                                          # MM/DD/YYYY
+        
+        print("Date Last Modified: {} on {}".format(time, date))                # Print date as "HH:MM:SS on MM/DD/YYYY"
         
         
     def add_line(self, text_to_add):
@@ -177,10 +192,13 @@ class File():
 
 
 if __name__ == '__main__':
-    A = File()
-    B = File()
-    C = File()
+    A = File("test")
+    B = File("test")
+    C = File("test")
 
-    print("A File Number: %" % A.getNumber())
-    print("B File Number: %" % B.getNumber())
-    print("C File Number: %" % C.getNumber())
+    print("A File Number: {}".format(A.get_number()))
+    print("B File Number: {}".format(B.get_number()))
+    print("C File Number: {}".format(C.get_number()))
+
+    print("C File Date: {}".format(C.get_date()))
+    C.print_date_style_1()
