@@ -14,16 +14,36 @@ import datetime
 class File:
     def __init__(self, initial_file_name, initial_content=" "):
         self.file_number = None
-        self.file_name = initial_file_name
+        self.file_name = None
         self.file_owner = " "
         self.time_modified = None
         self.content = initial_content
         self.date_last_modified = " "
+        
+        self.__generate_file_name(initial_file_name)                            # Set/generate and set file name
         self.__update_file_counter()
         self.__update_date_modified()                                           # Update the time last modified
         
-        self.file_ref = None    # TODO: Update according to future method of handling file opening
+        self.file_ref = None    # TODO: Update to match future method of handling file opening
+
+    # TODO: Refactor name to better illustrate purpose
+    def __generate_file_name(self, name):
+        """Checks if a file already exists with the intended file-name.
+        If no: returns the available file name.
+        If yes: Concatenate a modifier to the file name, re-check with the modified name.
+        """
+        import os
+        file_exists = os.path.exists(name)
+        modifier = 1
     
+        while file_exists:
+            print("File with name [{}] exists.".format(name))
+            name = "{}-{}.txt".format(name, modifier)
+            file_exists = os.path.exists(name)
+            modifier = modifier + 1
+
+        print("File created with name [{}].".format(name))
+        self.file_name = name
     
     @staticmethod
     def __update_file_counter():
@@ -169,24 +189,6 @@ class File:
         self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
         # Don't close yet, the calling method will access the file
         # !! Critical: Ensure calling method closes file
-    
-    # TODO: Refactor name to better illustrate purpose
-    @staticmethod
-    def __generate_file_name(name):
-        """Checks if a file already exists with the intended file-name.
-        If no: returns the available file name.
-        If yes: Concatenate a modifier to the file name, re-check with the modified name.
-        """
-        import os
-        file_exists = os.path.exists(name)
-        modifier = 1
-        
-        while file_exists:
-            name = "{}-{}.txt".format(name, modifier)
-            file_exists = os.path.exists(name)
-            modifier = modifier + 1
-        
-        return name
 
 
 if __name__ == '__main__':
