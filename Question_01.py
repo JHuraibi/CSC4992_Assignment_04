@@ -8,7 +8,7 @@
 # Also: Change self.file_ref to a method-only scope?
 class File():
     def __init__(self, initial_file_name, initial_content=" "):
-        self.fileNumber = None
+        self.file_number = None
         self.fileName = initial_file_name
         self.fileOwner = " "
         self.timeModified = None
@@ -26,7 +26,7 @@ class File():
     
     def get_number(self):
         """Returns the file number"""
-        return self.fileNumber
+        return self.file_number
         
         
     def get_name(self):
@@ -85,8 +85,8 @@ class File():
     
     def __update_local_content(self):
         self.file = open(self.fileName, 'r')                                    # Open the file in read mode
-        self.content = file.read()                                              # Store file contents as single string
-        file.close()                                                            # Close the file
+        self.content = self.file.read()                                         # Store file contents as single string
+        self.file.close()                                                       # Close the file
         #return [boolean if file read was successful]
     
     
@@ -113,10 +113,12 @@ class File():
     
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        self.file_ref = open(self.fileName, 'a')                                # Open the file in append mode
+        self.file_ref = open(self.fileName, 'rw')                               # Open the file in read/write mode
         raw_content = self.file_ref.read()                                      # Store content as single string
-        raw_content.replace(target, replacement)
         
+        updated_content = raw_content.replace(target, replacement)              # Replace occurences of target substring
+        
+        self.file_ref.write(updated_content)                                    # Write updated content to file
     
     
     def open_file(self):
