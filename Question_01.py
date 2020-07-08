@@ -31,7 +31,7 @@ class File:
         self.__update_file_counter()
         self.__update_date_modified()                                           # Update the time last modified
         
-    # TODO: Refactor name to better illustrate purpose
+    # TODO: Name is not being set correctly
     def __generate_file_name(self, name):
         """Checks if a file already exists with the intended file-name.
         If no: returns the available file name.
@@ -125,11 +125,15 @@ class File:
         content_by_lines = content.split('\n')                                  # Delimit by new line
         num_of_lines = len(content_by_lines)                                    # Record how many lines there are
         
-        if (line_number - 1) > num_of_lines:
+        if line_number < 1:
+            print("Line number must be 1 or greater")                           # Invalid line number entered
+            return None
+        elif (line_number - 1) > num_of_lines:
             print("There are only {} lines".format(num_of_lines))               # Line to erase doesn't exist
             return None
         
         removed_line = content_by_lines.pop(line_number - 1)                    # Remove content at intended line number
+        print("Removing line {}".format(line_number))                           # Confirmation of line removed
         print("Content that was removed: {}".format(removed_line))              # Confirmation of what was removed
         
         rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
