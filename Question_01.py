@@ -88,17 +88,17 @@ class File:
         if self.file_owner == " ":
             return "[No Owner Has Been Set]"                                    # Handle file having no owner
         else:
-            return self.file_owner                                              # If has owner, return the name
+            return self.file_owner                                              # If it has an owner, return the name
         
         
     def __update_date_modified(self):
         """Updates the last date and time file was modified (i.e. time when method was called)."""
-        self.date_last_modified = datetime.datetime.now()
+        self.date_last_modified = datetime.datetime.now()                       # Record the current date and time
         
         
     def get_date(self):
         """Returns the last date and time file was modified."""
-        return self.date_last_modified
+        return self.date_last_modified                                          # Return the un modified date/time
     
     # TODO: Instructions don't give a date format to use
     def print_date_style_1(self):
