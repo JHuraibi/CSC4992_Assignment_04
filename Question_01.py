@@ -128,7 +128,7 @@ class File:
         if line_number < 1:
             print("Line number must be 1 or greater")                           # Invalid line number entered
             return None
-        elif (line_number - 1) > num_of_lines:
+        elif (line_number - 1) > num_of_lines:                                  # (Minus 1 for index-based)
             print("There are only {} lines".format(num_of_lines))               # Line to erase doesn't exist
             return None
         
