@@ -31,7 +31,7 @@ class File:
         self.__update_file_counter()
         self.__update_date_modified()                                           # Update the time last modified
         
-    # TODO: Name is not being set correctly
+        
     def __generate_file_name(self, name):
         """Checks if a file already exists with the intended file-name.
         If no: returns the available file name.
@@ -39,21 +39,23 @@ class File:
         Value of variable "name" is never altered.
         """
         import os
+        
+        possible_name = "{}.txt".format(name)                                   # Just the name passed to __init__
+
         modifier = 1
-        possible_name = str(name) + str(modifier) + ".txt"
-    
         while os.path.exists(possible_name):
-            print("File with name [{}] exists.".format(possible_name))
-            modifier = float(modifier) + 1
-            possible_name = str(name) + str(modifier) + ".txt"
+            print("File with name [ {} ] exists.".format(possible_name))
+            possible_name = "{}-{}.txt".format(name, modifier)
+            modifier = int(modifier) + 1
         
         self.file_name = possible_name
+        
     
     
     def __create_file(self):
         """Creates a file with the name set by __generate_file_name"""
         file = open(self.file_name, "x")
-        print("File created with name [{}].".format(self.file_name))
+        print("File created with name [ {} ].".format(self.file_name))
         
     
     @staticmethod
