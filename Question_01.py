@@ -26,16 +26,16 @@ class File:
 
     def __str__(self):
     """Returns the string representation of the student."""
-    
+        pass
     
     # TODO: Update to reflect file counter method
     def _initial_setup(self, initial_file_name):
         """Executes initial setup methods.
         Actions Including: Set file name, create the file, set last-modified date."""
-        self._generate_file_name(initial_file_name)                            # Set/generate and set file name
-        self._create_file()                                                    # Create file with the generated name
+        self._generate_file_name(initial_file_name)                             # Set/generate and set file name
+        self._create_file()                                                     # Create file with the generated name
         self._update_file_counter()
-        self._update_date_modified()                                           # Set the last-modified date/time
+        self._update_date_modified()                                            # Set the last-modified date/time
         
         
     def _generate_file_name(self, name):
@@ -83,7 +83,7 @@ class File:
     def set_owner(self, owner_name):
         """Updates the name of the file owner."""
         self.file_owner = owner_name
-        self._update_date_modified()                                           # Update the time last modified
+        self._update_date_modified()                                            # Update the time last modified
         
         
     def get_owner(self):
@@ -120,7 +120,7 @@ class File:
         self.file_ref.write(text_to_add)                                        # Append the new data
         
         self.file_ref.close()                                                   # Close the file
-        self._update_date_modified()                                           # Update the time last modified
+        self._update_date_modified()                                            # Update the time last modified
 
     
     def delete_line(self, line_number):
@@ -148,7 +148,7 @@ class File:
         self.file_ref.write(rebuilt_content)                                    # Write the updated content to file
         
         self.file_ref.close()                                                   # Close the file
-        self._update_date_modified()                                           # Update the time last modified
+        self._update_date_modified()                                            # Update the time last modified
         
     # TODO: Clarify if printing or just return raw content
     def get_content(self):
@@ -167,7 +167,7 @@ class File:
         self.file_ref.write(new_content)                                        # Write the new content
         self.file_ref.close()                                                   # Close the file
         
-        self._update_date_modified()                                           # Update the time last modified
+        self._update_date_modified()                                            # Update the time last modified
         
         
     def has_word(self, word_to_find):
@@ -189,7 +189,7 @@ class File:
         self.file_ref.write(other_file_content)                                 # Append the data from the other file
         
         self.file_ref.close()                                                   # Close the file
-        self._update_date_modified()                                           # Update the time last modified
+        self._update_date_modified()                                            # Update the time last modified
     
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
@@ -213,7 +213,7 @@ class File:
         self.file_ref.write(updated_content)                                    # Write updated content to file
 
         self.file_ref.close()                                                   # Close the file
-        self._update_date_modified()                                           # Update the time last modified
+        self._update_date_modified()                                            # Update the time last modified
     
     
     def open_file(self):
