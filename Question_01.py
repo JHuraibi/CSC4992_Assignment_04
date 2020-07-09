@@ -168,7 +168,6 @@ class File:
         rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
         self.file_ref.write(rebuilt_content)                                    # Write the updated content to file
         
-        self.file_ref.close()                                                   # Close the file
         self._update_date_modified()                                            # Update the time last modified
         
     # CRITICAL: Not working
@@ -177,8 +176,6 @@ class File:
         """Fetches the entire content of the file and returns it."""
         self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
         all_content = self.file_ref.read()                                      # Read-in data as single string
-        
-        self.file_ref.close()                                                   # Close the file
         
         return all_content                                                      # Return the content
         
@@ -201,7 +198,6 @@ class File:
     def _update_local_content(self):
         self.file = open(self.file_name, 'r')                                   # Open the file in read mode
         self.content = self.file.read()                                         # Store file contents as single string
-        self.file.close()                                                       # Close the file
     
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file):
@@ -221,8 +217,6 @@ class File:
         raw_content = self.file_ref.read()                                      # Store content as single string
         words = raw_content.split()                                             # Separate into individual words
 
-        self.file_ref.close()                                                   # Close the file
-        
         return len(words)                                                       # List length == num of indiv. words
     
     # CRITICAL: Not working
