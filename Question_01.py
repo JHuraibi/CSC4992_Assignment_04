@@ -13,7 +13,7 @@ import datetime
 # e.g. Load/Read file each time or keep local copy in a str var?
 # TODO: Change self.file_ref to a method-only scope?
 class File:
-    def __init__(self, initial_file_name, initial_content=" "):
+    def __init__(self, initial_file_name, initial_content="[No Content]"):
         self.file_number = None
         self.file_name = None
         self.file_owner = " "
@@ -21,7 +21,7 @@ class File:
         self.content = initial_content
         self.date_last_modified = " "
         
-        self._initial_setup(initial_file_name)
+        self._initial_setup(initial_file_name)  # CHECK: Remove? (1 of 2)
         
         self.file_ref = None    # TODO: Update to match future method of handling file opening
 
@@ -66,7 +66,7 @@ class File:
         If yes: Concatenate a modifier to the file name, re-check with the modified name.
         """
         import os
-        
+        # TODO: Remove name, just do file_name
         possible_name = "{}.txt".format(name)                                   # uneditted name
 
         modifier = 1                                                            # Set the file name modifier
@@ -76,7 +76,6 @@ class File:
             modifier = int(modifier) + 1                                        # Increment the modifier
         
         self.file_name = possible_name                                          # Store the file name
-        
     
     
     def _create_file(self):
@@ -100,7 +99,7 @@ class File:
         """Returns the file name."""
         return self.file_name
     
-    
+    # CRITICAL: Not working correctly
     def set_owner(self, owner_name):
         """Updates the name of the file owner."""
         self.file_owner = owner_name
@@ -171,7 +170,6 @@ class File:
         self._update_date_modified()                                            # Update the time last modified
         
     # CRITICAL: Not working
-    # TODO: Clarify if printing or just return raw content
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
         self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
@@ -184,7 +182,8 @@ class File:
         """Changes the content of the text file, overwriting any existing text."""
         self.file_ref = open(self.file_name, 'w')                               # Open the file in read/write mode
         self.file_ref.write(new_content)                                        # Write the new content
-        self.file_ref.close()                                                   # Close the file
+        #self.file_ref.close()                                                   # Close the file
+        print("[DEBUG] Writable: {}".format(self.file_ref.writable()))
         
         self._update_date_modified()                                            # Update the time last modified
         
@@ -192,12 +191,6 @@ class File:
     def has_word(self, word_to_find):
         """Checks if the file has a specific word in it. Returns true if the word is found, otherwise returns false."""
         return word_to_find in self.content
-    
-    # TODO: Move up
-    # TODO: Add error handling
-    def _update_local_content(self):
-        self.file = open(self.file_name, 'r')                                   # Open the file in read mode
-        self.content = self.file.read()                                         # Store file contents as single string
     
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file):
@@ -222,14 +215,14 @@ class File:
     # CRITICAL: Not working
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
+        self.file_ref = open(self.file_name, 'w+')                              # Open the file in read/write mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         
         updated_content = raw_content.replace(target, replacement)              # Replace occurrences of target substr.
         
         self.file_ref.write(updated_content)                                    # Write updated content to file
 
-        self.file_ref.close()                                                   # Close the file
+        #self.file_ref.close()                                                   # Close the file
         self._update_date_modified()                                            # Update the time last modified
     
     
@@ -278,8 +271,10 @@ if __name__ == '__main__':
     #print(A)    # TODO: uh what. Need to "overload" toString() ??
     
     # replaces the word "this" with the word "that" everywhere in the file.
+    print("A before replacing: ")
+    print(A.get_content())
     A.replace("this", "that")
-    print("Aftering replacing this w/ that A: ")
+    print("A after replacing: ")
     print(A.get_content())
 
     # Equates to true if the file contains the word
