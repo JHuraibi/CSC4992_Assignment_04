@@ -4,6 +4,7 @@
 # Note: Referenced datetime information from docs.python.org
 #                now():     https://docs.python.org/3/library/datetime.html#datetime.datetime.now
 #           strftime():     https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior
+#           strftime():     https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior
 
 import datetime
 
@@ -24,9 +25,30 @@ class File:
         
         self.file_ref = None    # TODO: Update to match future method of handling file opening
 
+
     def __str__(self):
-    """Returns the string representation of the student."""
-        pass
+        """Returns the string representation of File objects in the format provided by assignment instructions.
+        Format: file number, file name, file owner, time date file was last modified, number words in the file.
+        """
+        return str(
+        "File Number:           {}\n".format(self.file_number) +
+        "File Name:             {}\n".format(self.file_name) +
+        "File Owner:            {}\n".format(self.get_owner()) +
+        "Date Last Modified:    {}\n".format(self.get_date()) +
+        "Number of Words:       {}\n".format(self.count_words())
+        )
+    
+    # TODO: Check value when equal
+    def __lt__(self, other):
+        words_in_me = self.count_words()
+        words_in_other = other.count_words()
+        return words_in_me < words_in_me
+    
+    
+    def __gt__(self, other):
+        words_in_me = self.count_words()
+        words_in_other = other.count_words()
+        return words_in_me > words_in_me
     
     # TODO: Update to reflect file counter method
     def _initial_setup(self, initial_file_name):
@@ -42,11 +64,10 @@ class File:
         """Checks if a file already exists with the intended file-name.
         If no: returns the available file name.
         If yes: Concatenate a modifier to the file name, re-check with the modified name.
-        Value of variable "name" is never altered.
         """
         import os
         
-        possible_name = "{}.txt".format(name)                                   # Just the name passed to __init__
+        possible_name = "{}.txt".format(name)                                   # uneditted name
 
         modifier = 1                                                            # Set the file name modifier
         while os.path.exists(possible_name):
@@ -150,6 +171,7 @@ class File:
         self.file_ref.close()                                                   # Close the file
         self._update_date_modified()                                            # Update the time last modified
         
+    # CRITICAL: Not working
     # TODO: Clarify if printing or just return raw content
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
@@ -174,6 +196,7 @@ class File:
         """Checks if the file has a specific word in it. Returns true if the word is found, otherwise returns false."""
         return word_to_find in self.content
     
+    # TODO: Move up
     # TODO: Add error handling
     def _update_local_content(self):
         self.file = open(self.file_name, 'r')                                   # Open the file in read mode
@@ -194,7 +217,7 @@ class File:
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
         """Counts the number of words in a file and returns it."""
-        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
+        self.file_ref = open(self.file_name, 'r')                               # Open the file in append mode
         raw_content = self.file_ref.read()                                      # Store content as single string
         words = raw_content.split()                                             # Separate into individual words
 
@@ -268,7 +291,8 @@ if __name__ == '__main__':
     # Equates to true if the file contains the word
     word = "World"
     b_has_word = B.has_word(str(word))
-    print("File {} contained the word {}: {}".format(B.get_name(), word, b_has_word))
+    print("File \"{}\" contained the word {}: \"{}\""
+          .format(B.get_name(), word, b_has_word))
 
     # TODO: Overriding methods
     # The content of A and B are added together and written into a new file E.
@@ -276,4 +300,6 @@ if __name__ == '__main__':
     # print("A + B = {}".format(E))
 
     # returns true, if the number of words in A is greater than the number of words in B
-    # print("A > B is {}".format(A > B))
+    print("A: {}".format(A.get_content()))
+    print("B: {}".format(B.get_content()))
+    print("A < B is {}".format(A > B))
