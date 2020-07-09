@@ -24,9 +24,18 @@ class File:
         
         self.file_ref = None    # TODO: Update to match future method of handling file opening
 
+
     def __str__(self):
-    """Returns the string representation of the student."""
-        pass
+        """Returns the string representation of File objects in the format provided by assignment instructions.
+        Format: file number, file name, file owner, time date file was last modified, number words in the file.
+        """
+        return str(
+            "File Number:           {}\n".format(self.file_number) +
+            "File Name:             {}\n".format(self.file_name) +
+            "File Owner:            {}\n".format(self.get_owner()) +
+            "Date Last Modified:    {}\n".format(self.get_date()) +
+            "Number of Words:       {}\n".format(self.count_words())
+        )
     
     # TODO: Update to reflect file counter method
     def _initial_setup(self, initial_file_name):
