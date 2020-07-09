@@ -108,8 +108,8 @@ class File:
         date = date_ref.strftime("%x")                                          # MM/DD/YYYY
         
         print("Date Last Modified: {} on {}".format(time, date))                # Print date as "HH:MM:SS on MM/DD/YYYY"
-        
-        
+
+    # CRITICAL: Add a newline character (not space!)
     def add_line(self, text_to_add):
         """Adds a new line to the end of file."""
         self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
@@ -118,7 +118,7 @@ class File:
         
         self.file_ref.close()                                                   # Close the file
         self.__update_date_modified()                                           # Update the time last modified
-        
+
     
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
@@ -199,7 +199,7 @@ class File:
         
         return len(words)                                                       # List length == num of indiv. words
     
-    
+    # CRITICAL: Not working
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
         self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
@@ -230,33 +230,42 @@ if __name__ == '__main__':
     #
     # print("C File Date: {}".format(C.get_date()))
     # C.print_date_style_1()
-    
+    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
     A = File("test1", "This is a file with some text")
     B = File("test2")
     C = File("test1", "This is another file with some text")
     D = File("test2")
-    
+
+    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
     C.set_owner("John Doe")
     D.set_owner("Runtao Zhu")
-    
+
     print(A.get_owner())
     print(D.get_owner())
-    
+
+    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
     D.set_content("This is a new content")
     D.add_from(A)
     D.get_date()
+    
     B.add_line("Hello World!")
     B.add_line("This is a new line!")
     B.delete_line(1)
-    print(A)
+    print("After appending 2 lines and deleting line 1 from B: ", end="")
+    print(B.get_content())
+    
+    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    #print(A)    # TODO: uh what. Need to "overload" toString() ??
     
     # replaces the word "this" with the word "that" everywhere in the file.
     A.replace("this", "that")
-    
+    print("Aftering replacing this w/ that A: ")
     print(A.get_content())
 
-    # returns true if the file contains the word this
-    B.has_word("World")
+    # Equates to true if the file contains the word
+    word = "World"
+    b_has_word = B.has_word(str(word))
+    print("File {} contained the word {}: {}".format(B.get_name(), word, b_has_word))
 
     # TODO: Overriding methods
     # The content of A and B are added together and written into a new file E.
