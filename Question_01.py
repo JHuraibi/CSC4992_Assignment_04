@@ -8,22 +8,26 @@
 import datetime
 
 
-# TODO: Determine how to reference file data
-# e.g. Load/Read file each time or keep local copy in a str var?
-# TODO: Change self.file_ref to a method-only scope?
 class File:
+    file_counter = 1
+    
     def __init__(self, initial_file_name, initial_content=" "):
-        self.file_number = None
+        self.file_number = File.file_counter
         self.file_name = None
         self.file_owner = " "
         self.time_modified = None
         self.content = initial_content
         self.date_last_modified = " "
-        
         self._initial_setup(initial_file_name)
+        File.file_counter = File.file_counter + 1
+    
+    
+    def __add__(self, other):
+        """Returns the sum of the numbers.
+        self is the left operand and other is
+        the right operand."""
+        return self.get_content() + other.get_content()
         
-        self.file_ref = None    # TODO: Update to match future method of handling file opening
-
 
     def __str__(self):
         """Returns the string representation of File objects in the format provided by assignment instructions.
@@ -40,10 +44,9 @@ class File:
     # TODO: Update to reflect file counter method
     def _initial_setup(self, initial_file_name):
         """Executes initial setup methods.
-        Actions Including: Set file name, create the file, set last-modified date."""
+        Actions Performed: Set file name, create the file, set last-modified date."""
         self._generate_file_name(initial_file_name)                             # Set/generate and set file name
         self._create_file()                                                     # Create file with the generated name
-        self._update_file_counter()
         self._update_date_modified()                                            # Set the last-modified date/time
         
         
@@ -64,7 +67,6 @@ class File:
             modifier = int(modifier) + 1                                        # Increment the modifier
         
         self.file_name = possible_name                                          # Store the file name
-        
     
     
     def _create_file(self):
@@ -72,12 +74,6 @@ class File:
         file = open(self.file_name, "x")                                        # Create the file
         print("File created with name [ {} ].".format(self.file_name))          # Confirmation of the file created
         
-    
-    @staticmethod
-    def _update_file_counter():
-        """Updates the file-number counter."""
-        pass
-    
     
     def get_number(self):
         """Returns the file number."""
@@ -124,21 +120,20 @@ class File:
     # CRITICAL: Add a newline character (not space!)
     def add_line(self, text_to_add):
         """Adds a new line to the end of file."""
-        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
+        file_ref = open(self.file_name, 'a')                                    # Open the file in append mode
         
-        self.file_ref.write(text_to_add)                                        # Append the new data
+        file_ref.write(text_to_add)                                             # Append the new data
         
-        self.file_ref.close()                                                   # Close the file
+        file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
-
+    
     
     def delete_line(self, line_number):
         """Deletes a specific line from file."""
         
-        # Textbook states 'rw' is a mode (p.122). Typo?
-        self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
+        file_ref = open(self.file_name, 'r+')                                   # Open the file in read/write mode
         
-        content = self.file_ref.read()                                          # Store file contents as single string
+        content = file_ref.read()                                               # Store file contents as single string
         content_by_lines = content.split('\n')                                  # Delimit by new line
         num_of_lines = len(content_by_lines)                                    # Record how many lines there are
         
@@ -154,27 +149,27 @@ class File:
         print("Content that was removed: {}".format(removed_line))              # Confirmation of what was removed
         
         rebuilt_content = "".join(content_by_lines)                             # Convert List back into single string
-        self.file_ref.write(rebuilt_content)                                    # Write the updated content to file
+        file_ref.write(rebuilt_content)                                         # Write the updated content to file
         
-        self.file_ref.close()                                                   # Close the file
+        file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
         
     # TODO: Clarify if printing or just return raw content
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
-        self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
-        all_content = self.file_ref.read()                                      # Read-in data as single string
+        file_ref = open(self.file_name, 'r')                                    # Open the file in read mode
+        all_content = file_ref.read()                                           # Read-in data as single string
         
-        self.file_ref.close()                                                   # Close the file
+        file_ref.close()                                                        # Close the file
         
         return all_content                                                      # Return the content
         
         
     def set_content(self, new_content):
         """Changes the content of the text file, overwriting any existing text."""
-        self.file_ref = open(self.file_name, 'w')                               # Open the file in read/write mode
-        self.file_ref.write(new_content)                                        # Write the new content
-        self.file_ref.close()                                                   # Close the file
+        file_ref = open(self.file_name, 'w')                                    # Open the file in read/write mode
+        file_ref.write(new_content)                                             # Write the new content
+        file_ref.close()                                                        # Close the file
         
         self._update_date_modified()                                            # Update the time last modified
         
@@ -192,56 +187,47 @@ class File:
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file):
         """Adds the content of the other file to the end of the current file."""
-        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
+        file_ref = open(self.file_name, 'a')                                    # Open the file in append mode
         other_file_content = other_file.get_content()                           # Load the contents of the other file
         
-        self.file_ref.write(other_file_content)                                 # Append the data from the other file
+        file_ref.write(other_file_content)                                      # Append the data from the other file
         
-        self.file_ref.close()                                                   # Close the file
+        file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
     
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
         """Counts the number of words in a file and returns it."""
-        self.file_ref = open(self.file_name, 'a')                               # Open the file in append mode
-        raw_content = self.file_ref.read()                                      # Store content as single string
+        file_ref = open(self.file_name, 'r')                                    # Open the file in append mode
+        raw_content = file_ref.read()                                           # Store content as single string
         words = raw_content.split()                                             # Separate into individual words
 
-        self.file_ref.close()                                                   # Close the file
+        file_ref.close()                                                        # Close the file
         
         return len(words)                                                       # List length == num of indiv. words
     
     # CRITICAL: Not working
     def replace(self, target, replacement):
         """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        self.file_ref = open(self.file_name, 'r+')                              # Open the file in read/write mode
-        raw_content = self.file_ref.read()                                      # Store content as single string
+        file_ref = open(self.file_name, 'r+')                                   # Open the file in read/write mode
+        raw_content = file_ref.read()                                           # Store content as single string
         
         updated_content = raw_content.replace(target, replacement)              # Replace occurrences of target substr.
         
-        self.file_ref.write(updated_content)                                    # Write updated content to file
+        file_ref.write(updated_content)                                         # Write updated content to file
 
-        self.file_ref.close()                                                   # Close the file
+        file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
     
     
     def open_file(self):
-        self.file_ref = open(self.file_name, 'r')                               # Open the file in read mode
+        file_ref = open(self.file_name, 'r')                                    # Open the file in read mode
         # Don't close yet, the calling method will access the file
         # !! Critical: Ensure calling method closes file
 
 
 if __name__ == '__main__':
-    # A = File("test")
-    # B = File("test")
-    # C = File("test")
-    #
-    # print("A File Number: {}".format(A.get_number()))
-    # print("B File Number: {}".format(B.get_number()))
-    # print("C File Number: {}".format(C.get_number()))
-    #
-    # print("C File Date: {}".format(C.get_date()))
-    # C.print_date_style_1()
+    
     print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
     A = File("test1", "This is a file with some text")
     B = File("test2")
@@ -267,11 +253,11 @@ if __name__ == '__main__':
     print(B.get_content())
     
     print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
-    #print(A)    # TODO: uh what. Need to "overload" toString() ??
+    print(A)
     
     # replaces the word "this" with the word "that" everywhere in the file.
     A.replace("this", "that")
-    print("Aftering replacing this w/ that A: ")
+    print("After replacing this w/ that A: ")
     print(A.get_content())
 
     # Equates to true if the file contains the word
