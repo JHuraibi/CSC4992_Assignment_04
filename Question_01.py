@@ -19,7 +19,7 @@ class File:
         self.date_last_modified = " "
         self._generate_file_name(initial_file_name)                             # Set/generate and set file name
         self._create_file()                                                     # Create file with the generated name
-        self._write_initial_content()                                             # Write initial content (if provided)
+        self._write_initial_content(initial_content)                            # Write initial content (if provided)
         self._update_date_modified()                                            # Set the last-modified date/time
         File.file_counter = File.file_counter + 1                               # Increment the file counter
     
@@ -77,10 +77,10 @@ class File:
             print("Error opening file to write initial content")
             return None
         
-        file_ref = open(self.file_name, "w")
-        file_ref.write(initial_content)
-        
-        
+        file_ref = open(self.file_name, "w")                                    # Open the just-recently created file
+        file_ref.write(initial_content)                                         # Write the initial content to the file
+        file_ref.close()                                                        # Close the file
+    
     
     def get_number(self):
         """Returns the file number."""
@@ -94,7 +94,7 @@ class File:
     
     def set_owner(self, owner_name):
         """Updates the name of the file owner."""
-        self.file_owner = owner_name
+        self.file_owner = owner_name                                            # Save the owner's name
         self._update_date_modified()                                            # Update the time last modified
         
         
@@ -115,7 +115,7 @@ class File:
         """Returns the last date and time file was modified."""
         return self.date_last_modified                                          # Return the un modified date/time
     
-    # TODO: Instructions don't give a date format to use
+    
     def print_date_style_1(self):
         """Prints date-modified as HH:MM:SS on MM/DD/YYYY"""
         date_ref = self.get_date()                                              # Establish a reference to the datetime
@@ -183,7 +183,11 @@ class File:
         
     def has_word(self, word_to_find):
         """Checks if the file has a specific word in it. Returns true if the word is found, otherwise returns false."""
-        return word_to_find in self.content
+        file_ref = open(self.file_name, 'r')                                    # Open the file in read mode
+        raw_content = file_ref.read()                                           # Store content as single string
+        words = raw_content.split()                                             # Separate into individual words
+        
+        return word_to_find in words                                            # Is the word in the List of words?
     
     # TODO: Add error handling
     def _update_local_content(self):
