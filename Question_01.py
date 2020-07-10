@@ -22,6 +22,7 @@ class File:
         self._write_initial_content(initial_content)                            # Write initial content (if provided)
         self._update_date_modified()                                            # Set the last-modified date/time
         File.file_counter = File.file_counter + 1                               # Increment the file counter
+        self._convert_file_to_list("test")
     
     
     def __add__(self, other):
@@ -204,12 +205,12 @@ class File:
     # TODO: Make sure unwanted items are not being counted
     def count_words(self):
         """Counts the number of words in a file and returns it."""
-        file_ref = open(self.file_name, 'r')                                    # Open the file in append mode
-        raw_content = file_ref.read()                                           # Store content as single string
-        words = raw_content.split()                                             # Separate into individual words
-
-        file_ref.close()                                                        # Close the file
+        # file_ref = open(self.file_name, 'r')                                    # Open the file in append mode
+        # raw_content = file_ref.read()                                           # Store content as single string
+        # words = raw_content.split()                                             # Separate into individual words
         
+        words = self._convert_file_to_list(self.file_name)
+
         return len(words)                                                       # List length == num of indiv. words
     
     # CRITICAL: Not working
@@ -224,6 +225,25 @@ class File:
 
         file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
+        
+        
+    @staticmethod
+    def _convert_file_to_list(file_name):
+        import os
+        
+        if ".txt" not in file_name:
+            file_name = str(file_name) + ".txt"                                 # Append file type (if not there)
+        
+        if not os.path.exists(file_name):
+            print("File not found.")                                            # File wasn't found
+            return None
+        
+        file_ref = open(file_name, 'r')                                         # Open the file in read mode
+        raw_content = file_ref.read()                                           # Store content as single string
+        words = raw_content.split()                                             # Separate into individual words
+        
+        return words                                                            # Return the list of words
+        
 
 
 if __name__ == '__main__':
@@ -233,7 +253,7 @@ if __name__ == '__main__':
     B = File("test2")
     C = File("test1", "This is another file with some text")
     D = File("test2")
-
+    
     print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
     C.set_owner("John Doe")
     D.set_owner("Runtao Zhu")
