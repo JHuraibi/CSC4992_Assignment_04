@@ -8,7 +8,6 @@
 import datetime
 
 
-# TODO: is file counter working?
 class File:
     file_counter = 1
     
@@ -28,7 +27,7 @@ class File:
     def __add__(self, other):
         """Returns a new file that contains the content of the current File instance and passed-in File instance.
         A default name is assigned as well."""
-        new_content = self.get_content() + other.get_content()
+        new_content = self.get_content() + '\n' + other.get_content()
         new_file = File("NewFile", new_content)
         
         return new_file
@@ -145,7 +144,8 @@ class File:
     def add_line(self, text_to_add):
         """Adds a new line to the end of file."""
         with open(self.file_name, 'a') as file_ref:                             # open the file in append mode
-            file_ref.write('\n' + text_to_add)                                  # Append the new data
+            text_to_add = "\n" + text_to_add                                    # Add as a new line
+            file_ref.write(text_to_add)                                         # Append the new data
         
         self._update_date_modified()                                            # Update the time last modified
     
@@ -188,7 +188,7 @@ class File:
     def set_content(self, new_content):
         """Changes the content of the text file, overwriting any existing text."""
         with open(self.file_name, 'w') as file_ref:                             # Open the file in write mode
-            file_ref.write(new_content)                                             # Write the new content
+            file_ref.write(new_content)                                         # Write the new content
         
         self._update_date_modified()                                            # Update the time last modified
         
@@ -196,8 +196,9 @@ class File:
     def has_word(self, word_to_find):
         """Checks if the file has a specific word in it. Returns true if the word is found, otherwise returns false."""
         with open(self.file_name, 'r') as file_ref:                             # Open the file in read mode
-            raw_content = file_ref.read()                                           # Store content as single string
-            words = raw_content.split()                                             # Separate into individual words
+            raw_content = file_ref.read()                                       # Store content as single string
+            words = raw_content.split()                                         # Separate into individual words
+        
         
         return word_to_find in words                                            # Is the word in the List of words?
     
@@ -253,52 +254,57 @@ class File:
 
 
 if __name__ == '__main__':
-    
-    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
-    A = File("test1", "This is a file with some text")
-    B = File("test2")
-    C = File("test1", "This is another file with some text")
-    D = File("test2")
-    
-    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
-    C.set_owner("John Doe")
-    D.set_owner("Runtao Zhu")
+    # Test Cases
 
-    print(A.get_owner())
-    print(D.get_owner())
-
-    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
-    D.set_content("This is a new content")
-    D.add_from(A)
-    D.get_date()
-    
-    B.add_line("Hello World!")
-    B.add_line("This is a new line!")
-    B.delete_line(1)
-    print("After appending 2 lines and deleting line 1 from B: ", end="")
-    print(B.get_content())
-    
-    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
-    print(A)
-    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
-    
-    # replaces the word "this" with the word "that" everywhere in the file.
-    print("File A Before replacing \"this\" with \"that\" A: ")
-    print(A.get_content())
-    
-    A.replace("This", "That")
-    print("File A After replacing \"This\" with \"That\" A: ")
-    print(A.get_content())
-
-    # Equates to true if the file contains the word
-    word = "World"
-    b_has_word = B.has_word(str(word))
-    print("File {} contained the word {}: {}".format(B.get_name(), word, b_has_word))
-
-    # The content of A and B are added together and written into a new file E.
-    E = A + B
-    print("A + B = {}".format(E.get_content()))
-
-    # returns true, if the number of words in A is greater than the number of words in B
-    print("A > B is {}".format(A > B))
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
+    # A = File("test1", "This is a file with some text")
+    # B = File("test2")
+    # C = File("test1", "This is another file with some text")
+    # D = File("test2")
+    #
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    # C.set_owner("John Doe")
+    # D.set_owner("Runtao Zhu")
+    #
+    # print(A.get_owner())
+    # print(D.get_owner())
+    #
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    # D.set_content("This is a new content")
+    # D.add_from(A)
+    # D.get_date()
+    #
+    # B.add_line("Hello World!")
+    # B.add_line("This is a new line!")
+    # B.delete_line(1)
+    # print("After appending 2 lines and deleting line 1 from B: ", end="")
+    # print(B.get_content())
+    #
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    #
+    # print(A)
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    #
+    # # replaces the word "this" with the word "that" everywhere in the file.
+    # print("File A Before replacing \"this\" with \"that\" A: ")
+    # print(A.get_content())
+    #
+    # A.replace("This", "That")
+    # print("File A After replacing \"This\" with \"That\" A: ")
+    # print(A.get_content())
+    #
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    # # Equates to true if the file contains the word
+    # word = "World"
+    # b_has_word = B.has_word(str(word))
+    # print("File {} contained the word {}: {}".format(B.get_name(), word, b_has_word))
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    #
+    # # The content of A and B are added together and written into a new file E.
+    # E = A + B
+    # print("A + B = {}".format(E.get_content()))
+    #
+    # print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
+    # # returns true, if the number of words in A is greater than the number of words in B
+    # print("A > B is {}".format(A > B))
     
