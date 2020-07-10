@@ -189,12 +189,6 @@ class File:
         
         return word_to_find in words                                            # Is the word in the List of words?
     
-    # TODO: Add error handling
-    def _update_local_content(self):
-        self.file = open(self.file_name, 'r')                                   # Open the file in read mode
-        self.content = self.file.read()                                         # Store file contents as single string
-        self.file.close()                                                       # Close the file
-    
     # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
     def add_from(self, other_file):
         """Adds the content of the other file to the end of the current file."""
