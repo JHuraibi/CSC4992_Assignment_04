@@ -8,6 +8,7 @@
 import datetime
 
 
+# TODO: is file counter working?
 class File:
     file_counter = 1
     
@@ -141,13 +142,12 @@ class File:
         
         print("Date Last Modified: {} on {}".format(time, date))                # Print date as "HH:MM:SS on MM/DD/YYYY"
 
-    # CRITICAL: Add a newline character (not space!)
+    
     def add_line(self, text_to_add):
         """Adds a new line to the end of file."""
         file_ref = open(self.file_name, 'a')                                    # Open the file in append mode
         
-        text_to_add = "\n" + text_to_add                                        # Ensure content is on a new line
-        file_ref.write(text_to_add)                                             # Append the new data
+        file_ref.write('\n' + text_to_add)                                      # Append the new data
         
         file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
@@ -179,8 +179,7 @@ class File:
         file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
         
-    # TODO: Clarify if printing or just return raw content
-    # CHECK: New Lines
+    
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
         file_ref = open(self.file_name, 'r')                                    # Open the file in read mode
@@ -208,41 +207,51 @@ class File:
         
         return word_to_find in words                                            # Is the word in the List of words?
     
-    # TODO: Make sure other file content is str (check: .write() cannot do numbers, p. 119)
+    
     def add_from(self, other_file):
         """Adds the content of the other file to the end of the current file."""
         file_ref = open(self.file_name, 'a')                                    # Open the file in append mode
         other_file_content = other_file.get_content()                           # Load the contents of the other file
         
-        file_ref.write(other_file_content)                                      # Append the data from the other file
+        file_ref.write('\n' + other_file_content)                               # Append the data from the other file
         
         file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
     
-    # TODO: Make sure unwanted items are not being counted
+    
     def count_words(self):
         """Counts the number of words in a file and returns it."""
-        # file_ref = open(self.file_name, 'r')                                    # Open the file in append mode
-        # raw_content = file_ref.read()                                           # Store content as single string
-        # words = raw_content.split()                                             # Separate into individual words
-        
         words = self._convert_file_to_list(self.file_name)
 
         return len(words)                                                       # List length == num of indiv. words
     
-    # CRITICAL: Not working
+    
     def replace(self, target, replacement):
-        """Replaces (target: str) with (replacement: str) everywhere in the file."""
-        file_ref = open(self.file_name, 'r+')                                   # Open the file in read/write mode
-        raw_content = file_ref.read()                                           # Store content as single string
-        
-        updated_content = raw_content.replace(target, replacement)              # Replace occurrences of target substr.
-        
-        file_ref.write(updated_content)                                         # Write updated content to file
+        """Replaces (target: str) with (replacement: str) everywhere in the file. Target IS case-sensitive."""
+        # Had issues with r+ and w+
+        with open(self.file_name, 'r') as file_ref:                             # Open the file in read mode
+            raw_content = file_ref.read()                                       # Store content as single string
+            updated_content = raw_content.replace(target, replacement)          # Replace occurrences of target substr.
 
-        file_ref.close()                                                        # Close the file
+        with open(self.file_name, 'w') as file_ref:                             # Open the file in write mode
+            file_ref.write(updated_content)                                     # Write updated content to file
+            
+        # file_ref.close()                                                      # Close the file
         self._update_date_modified()                                            # Update the time last modified
         
+        
+    # def replace_substring(self, target, replacement):
+    #     """Replaces (target: str) with (replacement: str) everywhere in the file."""
+    #     file_ref = open(self.file_name, 'r')                                    # Open the file in read/write mode
+    #     raw_content = file_ref.read()                                           # Store content as single string
+    #     content = raw_content
+    #     updated_content = str(content).replace(target, replacement)              # Replace occurrences of target substr.
+    #
+    #     file_ref.write(updated_content)                                         # Write updated content to file
+    #
+    #     file_ref.close()                                                        # Close the file
+    #     self._update_date_modified()                                            # Update the time last modified
+    
         
     @staticmethod
     def _convert_file_to_list(file_name):
@@ -291,10 +300,14 @@ if __name__ == '__main__':
     
     print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
     print(A)
+    print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
     
     # replaces the word "this" with the word "that" everywhere in the file.
-    A.replace("this", "that")
-    print("After replacing \"this\" with \"that\" A: ")
+    print("File A Before replacing \"this\" with \"that\" A: ")
+    print(A.get_content())
+    
+    A.replace("This", "That")
+    print("File A After replacing \"This\" with \"That\" A: ")
     print(A.get_content())
 
     # Equates to true if the file contains the word
