@@ -25,10 +25,11 @@ class File:
     
     
     def __add__(self, other):
-        """Returns the sum of the numbers.
-        self is the left operand and other is
-        the right operand."""
-        return self.get_content() + other.get_content()
+        """Returns a new file that contains the content of the current File instance and passed-in File instance."""
+        new_content = self.get_content() + other.get_content()
+        new_file = File("NewFile", new_content)
+        
+        return new_file
         
 
     def __str__(self):
