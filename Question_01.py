@@ -18,8 +18,10 @@ class File:
         self.time_modified = None
         self.content = initial_content
         self.date_last_modified = " "
-        self._initial_setup(initial_file_name)
-        File.file_counter = File.file_counter + 1
+        self._generate_file_name(initial_file_name)                             # Set/generate and set file name
+        self._create_file()                                                     # Create file with the generated name
+        self._update_date_modified()                                            # Set the last-modified date/time
+        File.file_counter = File.file_counter + 1                               # Increment the file counter
     
     
     def __add__(self, other):
@@ -41,14 +43,6 @@ class File:
             "Number of Words:       {}\n".format(self.count_words())
         )
     
-    # TODO: Update to reflect file counter method
-    def _initial_setup(self, initial_file_name):
-        """Executes initial setup methods.
-        Actions Performed: Set file name, create the file, set last-modified date."""
-        self._generate_file_name(initial_file_name)                             # Set/generate and set file name
-        self._create_file()                                                     # Create file with the generated name
-        self._update_date_modified()                                            # Set the last-modified date/time
-        
         
     def _generate_file_name(self, name):
         """Checks if a file already exists with the intended file-name.
