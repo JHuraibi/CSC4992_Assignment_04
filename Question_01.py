@@ -277,7 +277,7 @@ if __name__ == '__main__':
     
     # replaces the word "this" with the word "that" everywhere in the file.
     A.replace("this", "that")
-    print("After replacing this w/ that A: ")
+    print("After replacing \"this\" with \"that\" A: ")
     print(A.get_content())
 
     # Equates to true if the file contains the word
