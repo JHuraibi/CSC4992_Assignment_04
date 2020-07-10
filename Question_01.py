@@ -22,16 +22,32 @@ class File:
         self._write_initial_content(initial_content)                            # Write initial content (if provided)
         self._update_date_modified()                                            # Set the last-modified date/time
         File.file_counter = File.file_counter + 1                               # Increment the file counter
-        self._convert_file_to_list("test")
     
     
     def __add__(self, other):
-        """Returns a new file that contains the content of the current File instance and passed-in File instance."""
+        """Returns a new file that contains the content of the current File instance and passed-in File instance.
+        A default name is assigned as well."""
         new_content = self.get_content() + other.get_content()
         new_file = File("NewFile", new_content)
         
         return new_file
+
+    
+    def __lt__(self, other):
+        """Returns true if the number of words of calling File is LESS than (other: File)"""
+        length = self.count_words()                                             # Number of words of calling File
+        length_of_other = other.count_words()                                   # Number of words of passed-in File
         
+        return length < length_of_other
+
+
+    def __gt__(self, other):
+        """Returns true if the number of words of calling File is GREATER than (other: File)"""
+        length = self.count_words()                                             # Number of words of calling File
+        length_of_other = other.count_words()                                   # Number of words of passed-in File
+        
+        return length > length_of_other
+
 
     def __str__(self):
         """Returns the string representation of File objects in the format provided by assignment instructions.
@@ -70,7 +86,7 @@ class File:
         open(self.file_name, "x")                                               # Create the file
         print("File created with name [ {} ].".format(self.file_name))          # Confirmation of the file created
         
-    
+        
     def _write_initial_content(self, initial_content):
         import os
         
@@ -130,6 +146,7 @@ class File:
         """Adds a new line to the end of file."""
         file_ref = open(self.file_name, 'a')                                    # Open the file in append mode
         
+        text_to_add = "\n" + text_to_add                                        # Ensure content is on a new line
         file_ref.write(text_to_add)                                             # Append the new data
         
         file_ref.close()                                                        # Close the file
@@ -285,10 +302,10 @@ if __name__ == '__main__':
     b_has_word = B.has_word(str(word))
     print("File {} contained the word {}: {}".format(B.get_name(), word, b_has_word))
 
-    # TODO: Overriding methods
     # The content of A and B are added together and written into a new file E.
-    # E = A + B
-    # print("A + B = {}".format(E))
+    E = A + B
+    print("A + B = {}".format(E.get_content()))
 
     # returns true, if the number of words in A is greater than the number of words in B
-    # print("A > B is {}".format(A > B))
+    print("A > B is {}".format(A > B))
+    
