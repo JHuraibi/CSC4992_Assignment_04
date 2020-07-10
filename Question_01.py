@@ -162,6 +162,7 @@ class File:
         self._update_date_modified()                                            # Update the time last modified
         
     # TODO: Clarify if printing or just return raw content
+    # CHECK: New Lines
     def get_content(self):
         """Fetches the entire content of the file and returns it."""
         file_ref = open(self.file_name, 'r')                                    # Open the file in read mode
@@ -223,12 +224,6 @@ class File:
 
         file_ref.close()                                                        # Close the file
         self._update_date_modified()                                            # Update the time last modified
-    
-    
-    def open_file(self):
-        file_ref = open(self.file_name, 'r')                                    # Open the file in read mode
-        # Don't close yet, the calling method will access the file
-        # !! Critical: Ensure calling method closes file
 
 
 if __name__ == '__main__':
