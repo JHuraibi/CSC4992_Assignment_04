@@ -232,7 +232,7 @@ class File:
         import os
         
         if ".txt" not in file_name:
-            file_name = str(file_name) + ".txt"                                 # Append file type (if not there)
+            file_name = str(file_name) + ".txt"                                 # Append .txt extension (if not there)
         
         if not os.path.exists(file_name):
             print("File not found.")                                            # File wasn't found
