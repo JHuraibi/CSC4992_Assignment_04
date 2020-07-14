@@ -88,10 +88,11 @@ class File:
         
         
     def _write_initial_content(self, initial_content):
+        """Writes any content that was provided to the object's init method."""
         import os
         
         if not os.path.exists(self.file_name):
-            print("Error opening file to write initial content")
+            print("Error opening file to write initial content")                # File does not exist
             return None
 
         with open(self.file_name, 'w') as file_ref:                             # Open the just-recently created file
@@ -236,6 +237,7 @@ class File:
         
     @staticmethod
     def _convert_file_to_list(file_name):
+        """Returns a List of individual words from a text file (if exists)."""
         import os
         
         if ".txt" not in file_name:
